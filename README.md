@@ -1,6 +1,7 @@
+![Screenshot](./screenshot.png)
+
 # Pollution Tracker
 
-![Screenshot](./screenshot.png)
 A Django-based web application for tracking and mapping polluted areas with interactive polygon drawing capabilities.
 
 ## Features
