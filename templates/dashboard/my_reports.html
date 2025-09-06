@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}My Reports - Pollution Tracker{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-file-alt text-primary me-2"></i>My Reports
+                </h1>
+                <a href="{% url 'maps:map' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-map me-2"></i>View Map
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    {% if reports %}
+        <div class="row">
+            {% for report in reports %}
+                <div class="col-12 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0">{{ report.title }}</h5>
+                                        <span class="badge bg-{{ report.status|yesno:'success,warning,secondary' }}">
+                                            {{ report.get_status_display }}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        <a href="{% url 'maps:area_detail' report.polluted_area.pk %}" class="text-decoration-none">
+                                            {{ report.polluted_area.name }}
+                                        </a>
+                                    </p>
+                                    
+                                    <p class="card-text">{{ report.description|truncatewords:30 }}</p>
+                                    
+                                    <div class="d-flex align-items-center text-muted small">
+                                        <i class="fas fa-clock me-2"></i>
+                                        <span>{{ report.created_at|date:"F d, Y H:i" }}</span>
+                                        {% if report.verified_by %}
+                                            <span class="ms-3">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                Verified by {{ report.verified_by.username }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 text-md-end">
+                                    <div class="d-flex flex-column gap-2">
+                                        <a href="{% url 'maps:area_detail' report.polluted_area.pk %}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-2"></i>View Area
+                                        </a>
+                                        {% if report.status == 'pending' %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-clock me-1"></i>Under Review
+                                            </span>
+                                        {% elif report.status == 'verified' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Verified
+                                            </span>
+                                        {% elif report.status == 'rejected' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times me-1"></i>Rejected
+                                            </span>
+                                        {% elif report.status == 'resolved' %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-check-double me-1"></i>Resolved
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+                        <h4 class="text-muted mb-3">No Reports Yet</h4>
+                        <p class="text-muted mb-4">Submit reports about polluted areas to help track environmental issues.</p>
+                        <a href="{% url 'maps:map' %}" class="btn btn-primary">
+                            <i class="fas fa-map me-2"></i>Browse Areas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

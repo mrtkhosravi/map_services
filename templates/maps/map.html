@@ -1,0 +1,601 @@
+{% extends 'base.html' %}
+
+{% block title %}Map - Pollution Tracker{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        .map-container {
+            position: relative;
+        }
+        .map-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        .area-popup {
+            max-width: 300px;
+        }
+        .severity-badge {
+            font-size: 0.8em;
+        }
+        .click-marker {
+            z-index: 1000;
+        }
+        .polygon-marker {
+            z-index: 1000;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-map text-primary me-2"></i>Pollution Map
+                </h1>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAreaModal">
+                        <i class="fas fa-plus me-2"></i>Add Polluted Area
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" id="toggleClickMode">
+                        <i class="fas fa-mouse-pointer me-2"></i>Click to Add
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePolygons">
+                        <i class="fas fa-shapes me-2"></i>Show Polygons
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body p-0">
+                    <div class="map-container">
+                        <div id="map"></div>
+                        <div class="map-controls">
+                            <div class="btn-group-vertical" role="group">
+                                <button type="button" class="btn btn-light btn-sm" onclick="refreshMap()" title="Refresh Map">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-light btn-sm" onclick="toggleLayers()" title="Toggle Layers">
+                                    <i class="fas fa-layer-group"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" id="cancelPolygonButton" onclick="cancelPolygon()" title="Cancel Polygon" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Legend -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">Legend</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Severity Levels</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-success">Low</span>
+                                <span class="badge bg-warning">Moderate</span>
+                                <span class="badge bg-danger">High</span>
+                                <span class="badge bg-dark">Critical</span>
+                                <span class="badge bg-primary">Extreme</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Pollution Types</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-info">Air</span>
+                                <span class="badge bg-primary">Water</span>
+                                <span class="badge bg-secondary">Soil</span>
+                                <span class="badge bg-warning">Noise</span>
+                                <span class="badge bg-light text-dark">Light</span>
+                                <span class="badge bg-dark">Other</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Area Modal -->
+<div class="modal fade" id="addAreaModal" tabindex="-1" aria-labelledby="addAreaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAreaModalLabel">
+                    <i class="fas fa-plus text-primary me-2"></i>Add Polluted Area
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addAreaForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="areaName" class="form-label">Area Name *</label>
+                            <input type="text" class="form-control" id="areaName" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="pollutionType" class="form-label">Pollution Type *</label>
+                            <select class="form-control" id="pollutionType" name="pollution_type" required>
+                                <option value="">Select type...</option>
+                                <option value="air">Air Pollution</option>
+                                <option value="water">Water Pollution</option>
+                                <option value="soil">Soil Pollution</option>
+                                <option value="noise">Noise Pollution</option>
+                                <option value="light">Light Pollution</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="severity" class="form-label">Severity Level *</label>
+                            <select class="form-control" id="severity" name="severity" required>
+                                <option value="">Select severity...</option>
+                                <option value="1">Low</option>
+                                <option value="2">Moderate</option>
+                                <option value="3">High</option>
+                                <option value="4">Critical</option>
+                                <option value="5">Extreme</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="areaSize" class="form-label">Area Size (m²)</label>
+                            <input type="number" class="form-control" id="areaSize" name="area_size" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image (Optional)</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    </div>
+                    
+                    <!-- Hidden field for polygon coordinates -->
+                    <input type="hidden" id="polygonCoordinates" name="polygon_coordinates" value="">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="latitude" class="form-label">Latitude *</label>
+                            <input type="number" class="form-control" id="latitude" name="latitude" step="any" required readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="longitude" class="form-label">Longitude *</label>
+                            <input type="number" class="form-control" id="longitude" name="longitude" step="any" required readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Instructions:</strong> Click "Click to Add" to enable polygon mode, then click multiple points on the map to define the polluted area. Click the first point again to complete the polygon.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Save Area
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Global variables
+        let map;
+        let clickMode = false;
+        let polygonPoints = [];
+        let polygonMarkers = [];
+        let polygonLayer = null;
+        let isPolygonComplete = false;
+        let showPolygons = false;
+        let polygonLayers = [];
+        
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map
+            map = L.map('map').setView([40.7128, -74.0060], 10);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Load polluted areas
+            loadPollutedAreas(map);
+            
+            // Add click handler for map
+            map.on('click', function(e) {
+                if (clickMode) {
+                    handlePolygonClick(e);
+                }
+            });
+            
+            // Toggle click mode button
+            document.getElementById('toggleClickMode').addEventListener('click', function() {
+                toggleClickMode();
+            });
+            
+            // Toggle polygons button
+            document.getElementById('togglePolygons').addEventListener('click', function() {
+                togglePolygons();
+            });
+            
+            // Form submission
+            document.getElementById('addAreaForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitAreaForm();
+            });
+        });
+        
+        function loadPollutedAreas(map) {
+            fetch('{% url "maps:areas_json" %}')
+                .then(response => response.json())
+                .then(data => {
+                    data.features.forEach(function(feature) {
+                        const coords = feature.geometry.coordinates;
+                        const props = feature.properties;
+                        
+                        // Create popup content
+                        const popupContent = `
+                            <div class="area-popup">
+                                <h6>${props.name}</h6>
+                                <p class="mb-2">${props.description}</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-info me-1">${props.pollution_type}</span>
+                                    <span class="badge ${getSeverityClass(props.severity)}">Severity: ${props.severity}</span>
+                                </div>
+                                <small class="text-muted">
+                                    Reported by ${props.created_by} on ${new Date(props.created_at).toLocaleDateString()}
+                                </small>
+                                <div class="mt-2">
+                                    <a href="/maps/area/${props.id}/" class="btn btn-sm btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        `;
+                        
+                        if (feature.geometry.type === 'Polygon' && props.has_polygon) {
+                            // Create polygon
+                            const polygon = L.polygon(coords[0], {
+                                color: props.severity_color,
+                                weight: 2,
+                                opacity: 0.8,
+                                fillColor: props.severity_color,
+                                fillOpacity: 0.3
+                            }).addTo(map);
+                            
+                            polygon.bindPopup(popupContent);
+                            polygonLayers.push(polygon);
+                            
+                            // Add center marker for polygon
+                            const center = getPolygonCenter(coords[0]);
+                            const marker = L.circleMarker(center, {
+                                radius: 6,
+                                fillColor: props.severity_color,
+                                color: '#000',
+                                weight: 2,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            }).addTo(map);
+                            
+                            marker.bindPopup(popupContent);
+                        } else {
+                            // Create point marker
+                            const marker = L.circleMarker([coords[1], coords[0]], {
+                                radius: 8,
+                                fillColor: props.severity_color,
+                                color: '#000',
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            }).addTo(map);
+                            
+                            marker.bindPopup(popupContent);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading polluted areas:', error));
+        }
+        
+        function getSeverityClass(severity) {
+            const classes = {
+                1: 'bg-success',
+                2: 'bg-warning',
+                3: 'bg-danger',
+                4: 'bg-dark',
+                5: 'bg-primary'
+            };
+            return classes[severity] || 'bg-secondary';
+        }
+        
+        function getPolygonCenter(coordinates) {
+            let lat = 0, lng = 0;
+            coordinates.forEach(coord => {
+                lat += coord[0];
+                lng += coord[1];
+            });
+            return [lat / coordinates.length, lng / coordinates.length];
+        }
+        
+        function togglePolygons() {
+            showPolygons = !showPolygons;
+            const button = document.getElementById('togglePolygons');
+            
+            if (showPolygons) {
+                button.innerHTML = '<i class="fas fa-shapes me-2"></i>Hide Polygons';
+                button.classList.remove('btn-outline-secondary');
+                button.classList.add('btn-secondary');
+                
+                // Show all polygon layers
+                polygonLayers.forEach(layer => {
+                    map.addLayer(layer);
+                });
+            } else {
+                button.innerHTML = '<i class="fas fa-shapes me-2"></i>Show Polygons';
+                button.classList.remove('btn-secondary');
+                button.classList.add('btn-outline-secondary');
+                
+                // Hide all polygon layers
+                polygonLayers.forEach(layer => {
+                    map.removeLayer(layer);
+                });
+            }
+        }
+        
+        function refreshMap() {
+            // Clear existing markers and polygons
+            if (window.map) {
+                window.map.eachLayer(function(layer) {
+                    if (layer instanceof L.CircleMarker || layer instanceof L.Marker || layer instanceof L.Polygon) {
+                        window.map.removeLayer(layer);
+                    }
+                });
+            }
+            
+            // Clear polygon layers array
+            polygonLayers = [];
+            
+            // Reload polluted areas
+            loadPollutedAreas(map);
+        }
+        
+        function toggleLayers() {
+            // This function can be expanded to toggle different map layers
+            console.log('Toggle layers functionality');
+        }
+        
+        function toggleClickMode() {
+            clickMode = !clickMode;
+            const button = document.getElementById('toggleClickMode');
+            
+            if (clickMode) {
+                button.classList.remove('btn-outline-primary');
+                button.classList.add('btn-primary');
+                button.innerHTML = '<i class="fas fa-mouse-pointer me-2"></i>Polygon Mode ON';
+                map.getContainer().style.cursor = 'crosshair';
+                
+                // Reset polygon state
+                resetPolygon();
+            } else {
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-outline-primary');
+                button.innerHTML = '<i class="fas fa-mouse-pointer me-2"></i>Click to Add';
+                map.getContainer().style.cursor = '';
+                
+                // Clear polygon
+                resetPolygon();
+            }
+        }
+        
+        function handlePolygonClick(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+            const point = [lat, lng];
+            
+            // Check if we can complete the polygon (need at least 2 points)
+            if (polygonPoints.length >= 2) {
+                const firstPoint = polygonPoints[0];
+                
+                // Convert both points to pixel coordinates
+                const firstPixel = map.latLngToContainerPoint(firstPoint);
+                const currentPixel = map.latLngToContainerPoint([lat, lng]);
+                
+                // Calculate pixel distance
+                const pixelDistance = Math.sqrt(
+                    Math.pow(firstPixel.x - currentPixel.x, 2) + 
+                    Math.pow(firstPixel.y - currentPixel.y, 2)
+                );
+                
+                // If clicking near the first point (within 30 pixels), complete the polygon
+                if (pixelDistance < 30) {
+                    completePolygon();
+                    return;
+                }
+            }
+            
+            // Add point to polygon
+            polygonPoints.push(point);
+            
+            // Create marker for this point
+            const isFirstPoint = polygonPoints.length === 1;
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'polygon-marker',
+                    html: `<div style="background-color: ${isFirstPoint ? '#dc3545' : '#007bff'}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); ${isFirstPoint ? 'border-style: dashed;' : ''}"></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
+            }).addTo(map);
+            
+            polygonMarkers.push(marker);
+            
+            // Update polygon visualization
+            updatePolygonVisualization();
+            
+            // Show cancel button after first point
+            if (isFirstPoint) {
+                showCancelButton();
+            }
+        }
+        
+        function updatePolygonVisualization() {
+            // Remove existing polygon layer
+            if (polygonLayer) {
+                map.removeLayer(polygonLayer);
+            }
+            
+            // Draw polygon if we have at least 2 points
+            if (polygonPoints.length >= 2) {
+                polygonLayer = L.polygon(polygonPoints, {
+                    color: '#007bff',
+                    weight: 2,
+                    opacity: 0.7,
+                    fillColor: '#007bff',
+                    fillOpacity: 0.2
+                }).addTo(map);
+            }
+        }
+        
+        function completePolygon() {
+            if (polygonPoints.length < 3) {
+                alert('Please select at least 3 points to create a polygon.');
+                return;
+            }
+            
+            // Calculate center point for form
+            const centerLat = polygonPoints.reduce((sum, point) => sum + point[0], 0) / polygonPoints.length;
+            const centerLng = polygonPoints.reduce((sum, point) => sum + point[1], 0) / polygonPoints.length;
+            
+            // Update form fields with center coordinates
+            document.getElementById('latitude').value = centerLat.toFixed(6);
+            document.getElementById('longitude').value = centerLng.toFixed(6);
+            
+            // Save polygon coordinates to hidden field
+            document.getElementById('polygonCoordinates').value = JSON.stringify(polygonPoints);
+            
+            // Open modal
+            const modal = new bootstrap.Modal(document.getElementById('addAreaModal'));
+            modal.show();
+            
+            // Turn off click mode
+            toggleClickMode();
+        }
+        
+        function resetPolygon() {
+            // Clear all markers
+            polygonMarkers.forEach(marker => map.removeLayer(marker));
+            polygonMarkers = [];
+            
+            // Remove polygon layer
+            if (polygonLayer) {
+                map.removeLayer(polygonLayer);
+                polygonLayer = null;
+            }
+            
+            // Reset points
+            polygonPoints = [];
+            isPolygonComplete = false;
+            
+            // Clear polygon coordinates field
+            document.getElementById('polygonCoordinates').value = '';
+            
+            // Hide cancel button
+            hideCancelButton();
+        }
+        
+        function showCancelButton() {
+            const cancelButton = document.getElementById('cancelPolygonButton');
+            if (cancelButton) {
+                cancelButton.style.display = 'block';
+            }
+        }
+        
+        function hideCancelButton() {
+            const cancelButton = document.getElementById('cancelPolygonButton');
+            if (cancelButton) {
+                cancelButton.style.display = 'none';
+            }
+        }
+        
+        function cancelPolygon() {
+            resetPolygon();
+            toggleClickMode();
+        }
+        
+        function submitAreaForm() {
+            const form = document.getElementById('addAreaForm');
+            const formData = new FormData(form);
+            
+            fetch('{% url "maps:add_area" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addAreaModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Clear polygon
+                    resetPolygon();
+                    
+                    // Reload polluted areas
+                    loadPollutedAreas(map);
+                    
+                    // Show success message
+                    alert(data.message || 'Polluted area added successfully!');
+                } else {
+                    // Show form errors
+                    let errorMessage = 'Please fix the following errors:\n';
+                    for (const field in data.errors) {
+                        errorMessage += `• ${field}: ${data.errors[field].join(', ')}\n`;
+                    }
+                    alert(errorMessage);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding polluted area. Please try again.');
+            });
+        }
+    </script>
+{% endblock %}

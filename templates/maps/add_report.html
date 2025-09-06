@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Report - Pollution Tracker{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-file-alt text-primary me-2"></i>Add Report
+                </h1>
+                <a href="{% url 'maps:area_detail' polluted_area.pk %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Area
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="m-0 font-weight-bold text-primary">Report for: {{ polluted_area.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">Report Title *</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.title.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description *</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.description.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Submit Report
+                            </button>
+                            <a href="{% url 'maps:area_detail' polluted_area.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">Area Information</h6>
+                </div>
+                <div class="card-body">
+                    <h6>{{ polluted_area.name }}</h6>
+                    <p class="text-muted mb-2">{{ polluted_area.get_pollution_type_display }}</p>
+                    <p class="mb-3">
+                        <span class="badge bg-{{ polluted_area.severity_color|slice:'1:' }}">
+                            Severity: {{ polluted_area.get_severity_display }}
+                        </span>
+                    </p>
+                    
+                    {% if polluted_area.description %}
+                        <h6>Description</h6>
+                        <p class="text-muted small">{{ polluted_area.description|truncatewords:30 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card shadow mt-3">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">Report Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Be specific and detailed</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Include relevant observations</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Mention any changes since last report</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Provide context about the situation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
