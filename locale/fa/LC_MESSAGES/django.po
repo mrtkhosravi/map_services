@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pollution Tracker 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-06 20:24+0330\n"
+"POT-Creation-Date: 2025-09-06 20:29+0330\n"
 "PO-Revision-Date: 2025-09-06 20:09+0330\n"
 "Last-Translator: \n"
 "Language-Team: Persian\n"
@@ -58,7 +58,8 @@ msgstr "تأیید رمز عبور"
 #: .\templates\base.html:125 .\templates\base.html:129
 #: .\templates\core\home.html:4 .\templates\core\login.html:5
 #: .\templates\core\register.html:5 .\templates\dashboard\home.html:4
-#: .\templates\maps\area_detail.html:4 .\templates\maps\map.html:4
+#: .\templates\maps\area_detail.html:4 .\templates\maps\edit_area.html:4
+#: .\templates\maps\map.html:4
 msgid "Pollution Tracker"
 msgstr "ردیاب آلودگی"
 
@@ -284,6 +285,8 @@ msgid ""
 "Easily mark and report polluted areas on an interactive map with detailed "
 "information about pollution type and severity."
 msgstr ""
+"به راحتی مناطق آلوده را روی نقشه تعاملی علامت‌گذاری و گزارش کنید با اطلاعات "
+"دقیق در مورد نوع و شدت آلودگی."
 
 #: .\templates\core\home.html:66
 msgid "Track Progress"
@@ -294,6 +297,8 @@ msgid ""
 "Monitor pollution trends and track the progress of environmental cleanup "
 "efforts in your area."
 msgstr ""
+"روندهای آلودگی را نظارت کنید و پیشرفت تلاش‌های پاکسازی محیط زیست در منطقه خود "
+"را ردیابی کنید."
 
 #: .\templates\core\home.html:80
 msgid "Community Action"
@@ -304,6 +309,7 @@ msgid ""
 "Join a community of environmental activists working together to create "
 "positive change."
 msgstr ""
+"به جامعه فعالان محیط زیست بپیوندید که با هم برای ایجاد تغییر مثبت کار می‌کنند."
 
 #: .\templates\core\home.html:94
 msgid "How It Works"
@@ -421,6 +427,20 @@ msgstr "مکان"
 msgid "Quick Stats"
 msgstr "آمار سریع"
 
+#: .\templates\maps\edit_area.html:4
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit Area"
+msgstr "ویرایش"
+
+#: .\templates\maps\edit_area.html:104
+msgid "Current image:"
+msgstr "تصویر فعلی:"
+
+#: .\templates\maps\edit_area.html:105
+msgid "Current image"
+msgstr "تصویر فعلی"
+
 #: .\templates\maps\map.html:50 .\templates\maps\map.html:414
 msgid "Click to Add"
 msgstr "کلیک برای افزودن"
@@ -429,9 +449,21 @@ msgstr "کلیک برای افزودن"
 msgid "Show Polygons"
 msgstr "نمایش چندضلعی‌ها"
 
+#: .\templates\maps\map.html:68
+msgid "Refresh Map"
+msgstr "تازه‌سازی نقشه"
+
+#: .\templates\maps\map.html:71
+msgid "Toggle Layers"
+msgstr "تغییر لایه‌ها"
+
 #: .\templates\maps\map.html:74
 msgid "Cancel Polygon"
 msgstr "لغو چندضلعی"
+
+#: .\templates\maps\map.html:130
+msgid "Close"
+msgstr "بستن"
 
 #: .\templates\maps\map.html:198
 msgid "Instructions:"
@@ -442,7 +474,10 @@ msgid ""
 "Click \"Click to Add\" to enable polygon mode, then click multiple points on "
 "the map to define the polluted area. Click the first point again to complete "
 "the polygon."
-msgstr "برای فعال‌سازی حالت چندضلعی روی \"کلیک برای افزودن\" کلیک کنید، سپس چندین نقطه روی نقشه کلیک کنید تا منطقه آلوده را تعریف کنید. برای تکمیل چندضلعی دوباره روی نقطه اول کلیک کنید."
+msgstr ""
+"برای فعال‌سازی حالت چندضلعی روی \"کلیک برای افزودن\" کلیک کنید، سپس چندین "
+"نقطه روی نقشه کلیک کنید تا منطقه آلوده را تعریف کنید. برای تکمیل چندضلعی "
+"دوباره روی نقطه اول کلیک کنید."
 
 #: .\templates\maps\map.html:357
 msgid "Hide Polygons"

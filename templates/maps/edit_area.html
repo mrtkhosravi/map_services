@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Edit Area - Pollution Tracker{% endblock %}
+{% block title %}{% trans "Edit Area" %} - {% trans "Pollution Tracker" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -100,8 +101,8 @@
                             {% endif %}
                             {% if polluted_area.image %}
                                 <div class="mt-2">
-                                    <small class="text-muted">Current image:</small>
-                                    <img src="{{ polluted_area.image.url }}" alt="Current image" class="img-thumbnail" style="max-height: 100px;">
+                                    <small class="text-muted">{% trans "Current image:" %}</small>
+                                    <img src="{{ polluted_area.image.url }}" alt="{% trans 'Current image' %}" class="img-thumbnail" style="max-height: 100px;">
                                 </div>
                             {% endif %}
                         </div>
