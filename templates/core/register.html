@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
-{% block title %}Register - Pollution Tracker{% endblock %}
+{% block title %}{% trans "Register" %} - {% trans "Pollution Tracker" %}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -10,7 +11,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">
-                        <i class="fas fa-user-plus me-2"></i>Register
+                        <i class="fas fa-user-plus me-2"></i>{% trans "Register" %}
                     </h2>
                     
                     {% if messages %}
@@ -28,15 +29,15 @@
                         
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">
-                                <i class="fas fa-user-plus me-2"></i>Register
+                                <i class="fas fa-user-plus me-2"></i>{% trans "Register" %}
                             </button>
                         </div>
                     </form>
                     
                     <div class="text-center mt-3">
-                        <p class="mb-0">Already have an account? 
+                        <p class="mb-0">{% trans "Already have an account?" %} 
                             <a href="{% url 'core:login' %}" class="text-decoration-none">
-                                <i class="fas fa-sign-in-alt me-1"></i>Login here
+                                <i class="fas fa-sign-in-alt me-1"></i>{% trans "Login here" %}
                             </a>
                         </p>
                     </div>

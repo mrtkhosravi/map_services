@@ -1,33 +1,33 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Home - Pollution Tracker{% endblock %}
+{% block title %}{% trans "Home" %} - {% trans "Pollution Tracker" %}{% endblock %}
 
 {% block content %}
 <div class="hero-section bg-gradient-primary text-white py-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Track Environmental Pollution</h1>
+                <h1 class="display-4 fw-bold mb-4">{% trans "Track Environmental Pollution" %}</h1>
                 <p class="lead mb-4">
-                    Help protect our environment by reporting and tracking polluted areas in your community. 
-                    Together, we can make a difference for a cleaner, healthier planet.
+                    {% trans "Help protect our environment by reporting and tracking polluted areas in your community. Together, we can make a difference for a cleaner, healthier planet." %}
                 </p>
                 {% if not user.is_authenticated %}
                     <div class="d-flex gap-3">
                         <a href="{% url 'core:register' %}" class="btn btn-light btn-lg">
-                            <i class="fas fa-user-plus"></i> Get Started
+                            <i class="fas fa-user-plus"></i> {% trans "Get Started" %}
                         </a>
                         <a href="{% url 'core:login' %}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-sign-in-alt"></i> Login
+                            <i class="fas fa-sign-in-alt"></i> {% trans "Login" %}
                         </a>
                     </div>
                 {% else %}
                     <div class="d-flex gap-3">
                         <a href="{% url 'dashboard:home' %}" class="btn btn-light btn-lg">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                            <i class="fas fa-tachometer-alt"></i> {% trans "Dashboard" %}
                         </a>
                         <a href="{% url 'maps:map' %}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-map"></i> View Map
+                            <i class="fas fa-map"></i> {% trans "View Map" %}
                         </a>
                     </div>
                 {% endif %}
@@ -49,9 +49,9 @@
                     <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                         <i class="fas fa-map-marker-alt fa-lg"></i>
                     </div>
-                    <h5 class="card-title">Mark Polluted Areas</h5>
+                    <h5 class="card-title">{% trans "Mark Polluted Areas" %}</h5>
                     <p class="card-text">
-                        Easily mark and report polluted areas on an interactive map with detailed information about pollution type and severity.
+                        {% trans "Easily mark and report polluted areas on an interactive map with detailed information about pollution type and severity." %}
                     </p>
                 </div>
             </div>
@@ -63,9 +63,9 @@
                     <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                         <i class="fas fa-chart-line fa-lg"></i>
                     </div>
-                    <h5 class="card-title">Track Progress</h5>
+                    <h5 class="card-title">{% trans "Track Progress" %}</h5>
                     <p class="card-text">
-                        Monitor pollution trends and track the progress of environmental cleanup efforts in your area.
+                        {% trans "Monitor pollution trends and track the progress of environmental cleanup efforts in your area." %}
                     </p>
                 </div>
             </div>
@@ -77,9 +77,9 @@
                     <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                         <i class="fas fa-users fa-lg"></i>
                     </div>
-                    <h5 class="card-title">Community Action</h5>
+                    <h5 class="card-title">{% trans "Community Action" %}</h5>
                     <p class="card-text">
-                        Join a community of environmental activists working together to create positive change.
+                        {% trans "Join a community of environmental activists working together to create positive change." %}
                     </p>
                 </div>
             </div>
@@ -91,14 +91,14 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="mb-4">How It Works</h2>
+                <h2 class="mb-4">{% trans "How It Works" %}</h2>
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="d-flex align-items-center">
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                                 <span class="fw-bold">1</span>
                             </div>
-                            <span>Sign up and create your account</span>
+                            <span>{% trans "Sign up and create your account" %}</span>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -106,7 +106,7 @@
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                                 <span class="fw-bold">2</span>
                             </div>
-                            <span>Mark polluted areas on the map</span>
+                            <span>{% trans "Mark polluted areas on the map" %}</span>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -114,7 +114,7 @@
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                                 <span class="fw-bold">3</span>
                             </div>
-                            <span>Track progress and make a difference</span>
+                            <span>{% trans "Track progress and make a difference" %}</span>
                         </div>
                     </div>
                 </div>

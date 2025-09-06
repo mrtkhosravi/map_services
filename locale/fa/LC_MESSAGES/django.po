@@ -1,0 +1,449 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Pollution Tracker 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-06 20:24+0330\n"
+"PO-Revision-Date: 2025-09-06 20:09+0330\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\core\forms.py:10 .\core\forms.py:13 .\core\forms.py:59
+msgid "Username"
+msgstr "نام کاربری"
+
+#: .\core\forms.py:17 .\core\forms.py:20 .\core\forms.py:60
+msgid "Password"
+msgstr "رمز عبور"
+
+#: .\core\forms.py:28
+msgid "Email"
+msgstr "ایمیل"
+
+#: .\core\forms.py:31
+msgid "Email address"
+msgstr "آدرس ایمیل"
+
+#: .\core\forms.py:37
+msgid "First Name"
+msgstr "نام"
+
+#: .\core\forms.py:40
+msgid "First name"
+msgstr "نام"
+
+#: .\core\forms.py:46
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+#: .\core\forms.py:49
+msgid "Last name"
+msgstr "نام خانوادگی"
+
+#: .\core\forms.py:61
+msgid "Confirm password"
+msgstr "تأیید رمز عبور"
+
+#: .\core\views.py:17 .\templates\base.html:7 .\templates\base.html:27
+#: .\templates\base.html:125 .\templates\base.html:129
+#: .\templates\core\home.html:4 .\templates\core\login.html:5
+#: .\templates\core\register.html:5 .\templates\dashboard\home.html:4
+#: .\templates\maps\area_detail.html:4 .\templates\maps\map.html:4
+msgid "Pollution Tracker"
+msgstr "ردیاب آلودگی"
+
+#: .\core\views.py:33
+#, python-format
+msgid "Welcome back, %(username)s!"
+msgstr "خوش آمدید، %(username)s!"
+
+#: .\core\views.py:36
+msgid "Invalid username or password."
+msgstr "نام کاربری یا رمز عبور نامعتبر است."
+
+#: .\core\views.py:52
+#, python-format
+msgid "Account created for %(username)s! You can now log in."
+msgstr "حساب کاربری برای %(username)s ایجاد شد! اکنون می‌توانید وارد شوید."
+
+#: .\core\views.py:63
+msgid "You have been logged out successfully."
+msgstr "با موفقیت خارج شدید."
+
+#: .\core\views.py:78
+msgid "Language changed successfully."
+msgstr "زبان با موفقیت تغییر کرد."
+
+#: .\maps\forms.py:8 .\maps\models.py:30
+msgid "Latitude"
+msgstr "عرض جغرافیایی"
+
+#: .\maps\forms.py:11
+msgid "Latitude (e.g., 40.7128)"
+msgstr "عرض جغرافیایی (مثال: 40.7128)"
+
+#: .\maps\forms.py:16 .\maps\models.py:31
+msgid "Longitude"
+msgstr "طول جغرافیایی"
+
+#: .\maps\forms.py:19
+msgid "Longitude (e.g., -74.0060)"
+msgstr "طول جغرافیایی (مثال: -74.0060)"
+
+#: .\maps\models.py:10
+msgid "Air Pollution"
+msgstr "آلودگی هوا"
+
+#: .\maps\models.py:11
+msgid "Water Pollution"
+msgstr "آلودگی آب"
+
+#: .\maps\models.py:12
+msgid "Soil Pollution"
+msgstr "آلودگی خاک"
+
+#: .\maps\models.py:13
+msgid "Noise Pollution"
+msgstr "آلودگی صوتی"
+
+#: .\maps\models.py:14
+msgid "Light Pollution"
+msgstr "آلودگی نوری"
+
+#: .\maps\models.py:15
+msgid "Other"
+msgstr "سایر"
+
+#: .\maps\models.py:19
+msgid "Low"
+msgstr "کم"
+
+#: .\maps\models.py:20
+msgid "Moderate"
+msgstr "متوسط"
+
+#: .\maps\models.py:21
+msgid "High"
+msgstr "زیاد"
+
+#: .\maps\models.py:22
+msgid "Critical"
+msgstr "بحرانی"
+
+#: .\maps\models.py:23
+msgid "Extreme"
+msgstr "فوق‌العاده"
+
+#: .\maps\models.py:26
+msgid "Name"
+msgstr "نام"
+
+#: .\maps\models.py:27 .\templates\maps\area_detail.html:71
+msgid "Description"
+msgstr "توضیحات"
+
+#: .\maps\models.py:28 .\templates\maps\area_detail.html:37
+msgid "Pollution Type"
+msgstr "نوع آلودگی"
+
+#: .\maps\models.py:29 .\templates\maps\area_detail.html:144
+msgid "Severity"
+msgstr "شدت"
+
+#: .\maps\models.py:30
+msgid "Latitude coordinate"
+msgstr ""
+
+#: .\maps\models.py:31
+msgid "Longitude coordinate"
+msgstr ""
+
+#: .\maps\models.py:32
+msgid "Polygon coordinates as JSON"
+msgstr ""
+
+#: .\maps\models.py:32
+msgid "Polygon Coordinates"
+msgstr ""
+
+#: .\maps\models.py:33
+msgid "Area size in square meters"
+msgstr ""
+
+#: .\maps\models.py:33 .\templates\maps\area_detail.html:49
+msgid "Area Size"
+msgstr ""
+
+#: .\maps\models.py:42
+msgid "Polluted Area"
+msgstr ""
+
+#: .\maps\models.py:43
+msgid "Polluted Areas"
+msgstr ""
+
+#: .\maps\models.py:82
+msgid "Pending"
+msgstr ""
+
+#: .\maps\models.py:83
+msgid "Verified"
+msgstr ""
+
+#: .\maps\models.py:84
+msgid "Rejected"
+msgstr ""
+
+#: .\maps\models.py:85
+msgid "Resolved"
+msgstr ""
+
+#: .\templates\base.html:39 .\templates\core\home.html:27
+#: .\templates\dashboard\home.html:4 .\templates\dashboard\home.html:11
+msgid "Dashboard"
+msgstr "داشبورد"
+
+#: .\templates\base.html:44 .\templates\maps\map.html:4
+msgid "Map"
+msgstr "نقشه"
+
+#: .\templates\base.html:49 .\templates\dashboard\home.html:42
+msgid "My Areas"
+msgstr "مناطق من"
+
+#: .\templates\base.html:78 .\templates\dashboard\home.html:78
+msgid "My Reports"
+msgstr "گزارش‌های من"
+
+#: .\templates\base.html:82
+msgid "Logout"
+msgstr "خروج"
+
+#: .\templates\base.html:89 .\templates\core\home.html:21
+#: .\templates\core\login.html:5 .\templates\core\login.html:14
+#: .\templates\core\login.html:32
+msgid "Login"
+msgstr "ورود"
+
+#: .\templates\base.html:94 .\templates\core\register.html:5
+#: .\templates\core\register.html:14 .\templates\core\register.html:32
+msgid "Register"
+msgstr "ثبت‌نام"
+
+#: .\templates\base.html:126
+msgid "Track and monitor environmental pollution in your area."
+msgstr "آلودگی محیط زیست در منطقه خود را ردیابی و نظارت کنید."
+
+#: .\templates\base.html:129
+msgid "All rights reserved."
+msgstr "تمام حقوق محفوظ است."
+
+#: .\templates\core\home.html:4
+msgid "Home"
+msgstr "خانه"
+
+#: .\templates\core\home.html:11
+#, fuzzy
+#| msgid "Track and monitor environmental pollution in your area."
+msgid "Track Environmental Pollution"
+msgstr "ردیابی آلودگی محیط زیست"
+
+#: .\templates\core\home.html:13
+msgid ""
+"Help protect our environment by reporting and tracking polluted areas in "
+"your community. Together, we can make a difference for a cleaner, healthier "
+"planet."
+msgstr ""
+"با گزارش و ردیابی مناطق آلوده در جامعه خود، به حفاظت از محیط زیست کمک کنید. "
+"با هم می‌توانیم برای سیاره‌ای پاک‌تر و سالم‌تر تغییر ایجاد کنیم."
+
+#: .\templates\core\home.html:18
+msgid "Get Started"
+msgstr "شروع کنید"
+
+#: .\templates\core\home.html:30
+msgid "View Map"
+msgstr "مشاهده نقشه"
+
+#: .\templates\core\home.html:52
+msgid "Mark Polluted Areas"
+msgstr "علامت‌گذاری مناطق آلوده"
+
+#: .\templates\core\home.html:54
+msgid ""
+"Easily mark and report polluted areas on an interactive map with detailed "
+"information about pollution type and severity."
+msgstr ""
+
+#: .\templates\core\home.html:66
+msgid "Track Progress"
+msgstr "ردیابی پیشرفت"
+
+#: .\templates\core\home.html:68
+msgid ""
+"Monitor pollution trends and track the progress of environmental cleanup "
+"efforts in your area."
+msgstr ""
+
+#: .\templates\core\home.html:80
+msgid "Community Action"
+msgstr "اقدام جمعی"
+
+#: .\templates\core\home.html:82
+msgid ""
+"Join a community of environmental activists working together to create "
+"positive change."
+msgstr ""
+
+#: .\templates\core\home.html:94
+msgid "How It Works"
+msgstr "چگونه کار می‌کند"
+
+#: .\templates\core\home.html:101
+msgid "Sign up and create your account"
+msgstr "ثبت‌نام کنید و حساب کاربری خود را ایجاد کنید"
+
+#: .\templates\core\home.html:109
+msgid "Mark polluted areas on the map"
+msgstr "مناطق آلوده را روی نقشه علامت‌گذاری کنید"
+
+#: .\templates\core\home.html:117
+msgid "Track progress and make a difference"
+msgstr "پیشرفت را ردیابی کنید و تغییر ایجاد کنید"
+
+#: .\templates\core\login.html:38
+msgid "Don't have an account?"
+msgstr "حساب کاربری ندارید؟"
+
+#: .\templates\core\login.html:40
+msgid "Register here"
+msgstr "اینجا ثبت‌نام کنید"
+
+#: .\templates\core\register.html:38
+msgid "Already have an account?"
+msgstr "قبلاً حساب کاربری دارید؟"
+
+#: .\templates\core\register.html:40
+msgid "Login here"
+msgstr "اینجا وارد شوید"
+
+#: .\templates\dashboard\home.html:24
+#, fuzzy
+#| msgid "Mark Polluted Areas"
+msgid "Total Polluted Areas"
+msgstr "علامت‌گذاری مناطق آلوده"
+
+#: .\templates\dashboard\home.html:60
+#, fuzzy
+#| msgid "My Reports"
+msgid "Total Reports"
+msgstr "گزارش‌های من"
+
+#: .\templates\maps\area_detail.html:16
+msgid "Back to Map"
+msgstr "بازگشت به نقشه"
+
+#: .\templates\maps\area_detail.html:20
+msgid "Edit"
+msgstr "ویرایش"
+
+#: .\templates\maps\area_detail.html:32
+msgid "Area Information"
+msgstr "اطلاعات منطقه"
+
+#: .\templates\maps\area_detail.html:42
+#, fuzzy
+#| msgid "Severity"
+msgid "Severity Level"
+msgstr "سطح شدت"
+
+#: .\templates\maps\area_detail.html:54
+msgid "Not specified"
+msgstr "مشخص نشده"
+
+#: .\templates\maps\area_detail.html:59
+msgid "Created By"
+msgstr "ایجاد شده توسط"
+
+#: .\templates\maps\area_detail.html:62
+msgid "Created At"
+msgstr "تاریخ ایجاد"
+
+#: .\templates\maps\area_detail.html:65
+#, fuzzy
+#| msgid "Last Name"
+msgid "Last Updated"
+msgstr "آخرین به‌روزرسانی"
+
+#: .\templates\maps\area_detail.html:76
+msgid "Image"
+msgstr "تصویر"
+
+#: .\templates\maps\area_detail.html:85 .\templates\maps\area_detail.html:140
+#, fuzzy
+#| msgid "My Reports"
+msgid "Reports"
+msgstr "گزارش‌ها"
+
+#: .\templates\maps\area_detail.html:88
+#, fuzzy
+#| msgid "My Reports"
+msgid "Add Report"
+msgstr "افزودن گزارش"
+
+#: .\templates\maps\area_detail.html:102
+msgid "By"
+msgstr "توسط"
+
+#: .\templates\maps\area_detail.html:103
+msgid "on"
+msgstr "در"
+
+#: .\templates\maps\area_detail.html:114
+msgid "No reports for this area yet."
+msgstr "هنوز گزارشی برای این منطقه وجود ندارد."
+
+#: .\templates\maps\area_detail.html:124
+msgid "Location"
+msgstr "مکان"
+
+#: .\templates\maps\area_detail.html:134
+msgid "Quick Stats"
+msgstr "آمار سریع"
+
+#: .\templates\maps\map.html:50 .\templates\maps\map.html:414
+msgid "Click to Add"
+msgstr "کلیک برای افزودن"
+
+#: .\templates\maps\map.html:53 .\templates\maps\map.html:366
+msgid "Show Polygons"
+msgstr "نمایش چندضلعی‌ها"
+
+#: .\templates\maps\map.html:74
+msgid "Cancel Polygon"
+msgstr "لغو چندضلعی"
+
+#: .\templates\maps\map.html:198
+msgid "Instructions:"
+msgstr "دستورالعمل:"
+
+#: .\templates\maps\map.html:198
+msgid ""
+"Click \"Click to Add\" to enable polygon mode, then click multiple points on "
+"the map to define the polluted area. Click the first point again to complete "
+"the polygon."
+msgstr "برای فعال‌سازی حالت چندضلعی روی \"کلیک برای افزودن\" کلیک کنید، سپس چندین نقطه روی نقشه کلیک کنید تا منطقه آلوده را تعریف کنید. برای تکمیل چندضلعی دوباره روی نقطه اول کلیک کنید."
+
+#: .\templates\maps\map.html:357
+msgid "Hide Polygons"
+msgstr "مخفی کردن چندضلعی‌ها"

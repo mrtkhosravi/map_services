@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}{{ polluted_area.name }} - Pollution Tracker{% endblock %}
+{% block title %}{{ polluted_area.name }} - {% trans "Pollution Tracker" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -12,11 +13,11 @@
                 </h1>
                 <div class="d-flex gap-2">
                     <a href="{% url 'maps:map' %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Back to Map
+                        <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Map" %}
                     </a>
                     {% if user == polluted_area.created_by %}
                         <a href="{% url 'maps:edit_area' polluted_area.pk %}" class="btn btn-warning">
-                            <i class="fas fa-edit me-2"></i>Edit
+                            <i class="fas fa-edit me-2"></i>{% trans "Edit" %}
                         </a>
                     {% endif %}
                 </div>
@@ -28,51 +29,51 @@
         <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header">
-                    <h5 class="m-0 font-weight-bold text-primary">Area Information</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{% trans "Area Information" %}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Pollution Type</h6>
+                            <h6>{% trans "Pollution Type" %}</h6>
                             <p class="mb-3">
                                 <span class="badge bg-info fs-6">{{ polluted_area.get_pollution_type_display }}</span>
                             </p>
                             
-                            <h6>Severity Level</h6>
+                            <h6>{% trans "Severity Level" %}</h6>
                             <p class="mb-3">
                                 <span class="badge bg-{{ polluted_area.severity_color|slice:'1:' }} fs-6">
                                     {{ polluted_area.get_severity_display }}
                                 </span>
                             </p>
                             
-                            <h6>Area Size</h6>
+                            <h6>{% trans "Area Size" %}</h6>
                             <p class="mb-3">
                                 {% if polluted_area.area_size %}
                                     {{ polluted_area.area_size|floatformat:2 }} m²
                                 {% else %}
-                                    Not specified
+                                    {% trans "Not specified" %}
                                 {% endif %}
                             </p>
                         </div>
                         <div class="col-md-6">
-                            <h6>Created By</h6>
+                            <h6>{% trans "Created By" %}</h6>
                             <p class="mb-3">{{ polluted_area.created_by.get_full_name|default:polluted_area.created_by.username }}</p>
                             
-                            <h6>Created At</h6>
+                            <h6>{% trans "Created At" %}</h6>
                             <p class="mb-3">{{ polluted_area.created_at|date:"F d, Y H:i" }}</p>
                             
-                            <h6>Last Updated</h6>
+                            <h6>{% trans "Last Updated" %}</h6>
                             <p class="mb-3">{{ polluted_area.updated_at|date:"F d, Y H:i" }}</p>
                         </div>
                     </div>
                     
                     {% if polluted_area.description %}
-                        <h6>Description</h6>
+                        <h6>{% trans "Description" %}</h6>
                         <p class="text-muted">{{ polluted_area.description|linebreaks }}</p>
                     {% endif %}
                     
                     {% if polluted_area.image %}
-                        <h6>Image</h6>
+                        <h6>{% trans "Image" %}</h6>
                         <img src="{{ polluted_area.image.url }}" alt="{{ polluted_area.name }}" class="img-fluid rounded" style="max-height: 400px;">
                     {% endif %}
                 </div>
@@ -81,10 +82,10 @@
             <!-- Reports Section -->
             <div class="card shadow">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="m-0 font-weight-bold text-primary">Reports</h5>
+                    <h5 class="m-0 font-weight-bold text-primary">{% trans "Reports" %}</h5>
                     {% if user.is_authenticated %}
                         <a href="{% url 'maps:add_report' polluted_area.pk %}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-2"></i>Add Report
+                            <i class="fas fa-plus me-2"></i>{% trans "Add Report" %}
                         </a>
                     {% endif %}
                 </div>
@@ -98,8 +99,8 @@
                                             <h6 class="mb-1">{{ report.title }}</h6>
                                             <p class="mb-2 text-muted">{{ report.description|truncatewords:20 }}</p>
                                             <small class="text-muted">
-                                                By {{ report.reporter.get_full_name|default:report.reporter.username }} 
-                                                on {{ report.created_at|date:"M d, Y" }}
+                                                {% trans "By" %} {{ report.reporter.get_full_name|default:report.reporter.username }} 
+                                                {% trans "on" %} {{ report.created_at|date:"M d, Y" }}
                                             </small>
                                         </div>
                                         <span class="badge bg-{{ report.status|yesno:'success,warning,secondary' }}">
@@ -110,7 +111,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p class="text-muted text-center py-3">No reports for this area yet.</p>
+                        <p class="text-muted text-center py-3">{% trans "No reports for this area yet." %}</p>
                     {% endif %}
                 </div>
             </div>
@@ -120,7 +121,7 @@
             <!-- Map -->
             <div class="card shadow mb-4">
                 <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">Location</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{% trans "Location" %}</h6>
                 </div>
                 <div class="card-body p-0">
                     <div id="mini-map" style="height: 300px; width: 100%;"></div>
@@ -130,17 +131,17 @@
             <!-- Quick Stats -->
             <div class="card shadow">
                 <div class="card-header">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Stats</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{% trans "Quick Stats" %}</h6>
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-6">
                             <h4 class="text-primary">{{ reports|length }}</h4>
-                            <small class="text-muted">Reports</small>
+                            <small class="text-muted">{% trans "Reports" %}</small>
                         </div>
                         <div class="col-6">
                             <h4 class="text-{{ polluted_area.severity_color|slice:'1:' }}">{{ polluted_area.severity }}</h4>
-                            <small class="text-muted">Severity</small>
+                            <small class="text-muted">{% trans "Severity" %}</small>
                         </div>
                     </div>
                 </div>

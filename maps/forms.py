@@ -1,19 +1,22 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 from .models import PollutedArea, PollutionReport
 
 
 class PollutedAreaForm(forms.ModelForm):
     latitude = forms.FloatField(
+        label=_('Latitude'),
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Latitude (e.g., 40.7128)',
+            'placeholder': _('Latitude (e.g., 40.7128)'),
             'step': 'any'
         })
     )
     longitude = forms.FloatField(
+        label=_('Longitude'),
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Longitude (e.g., -74.0060)',
+            'placeholder': _('Longitude (e.g., -74.0060)'),
             'step': 'any'
         })
     )

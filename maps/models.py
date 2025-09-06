@@ -1,35 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.translation import gettext_lazy as _
 import json
 
 
 class PollutedArea(models.Model):
     POLLUTION_TYPES = [
-        ('air', 'Air Pollution'),
-        ('water', 'Water Pollution'),
-        ('soil', 'Soil Pollution'),
-        ('noise', 'Noise Pollution'),
-        ('light', 'Light Pollution'),
-        ('other', 'Other'),
+        ('air', _('Air Pollution')),
+        ('water', _('Water Pollution')),
+        ('soil', _('Soil Pollution')),
+        ('noise', _('Noise Pollution')),
+        ('light', _('Light Pollution')),
+        ('other', _('Other')),
     ]
     
     SEVERITY_LEVELS = [
-        (1, 'Low'),
-        (2, 'Moderate'),
-        (3, 'High'),
-        (4, 'Critical'),
-        (5, 'Extreme'),
+        (1, _('Low')),
+        (2, _('Moderate')),
+        (3, _('High')),
+        (4, _('Critical')),
+        (5, _('Extreme')),
     ]
     
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    pollution_type = models.CharField(max_length=20, choices=POLLUTION_TYPES)
-    severity = models.IntegerField(choices=SEVERITY_LEVELS, validators=[MinValueValidator(1), MaxValueValidator(5)])
-    latitude = models.FloatField(help_text="Latitude coordinate")
-    longitude = models.FloatField(help_text="Longitude coordinate")
-    polygon_coordinates = models.TextField(help_text="Polygon coordinates as JSON", null=True, blank=True)
-    area_size = models.FloatField(help_text="Area size in square meters", null=True, blank=True)
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    description = models.TextField(blank=True, verbose_name=_('Description'))
+    pollution_type = models.CharField(max_length=20, choices=POLLUTION_TYPES, verbose_name=_('Pollution Type'))
+    severity = models.IntegerField(choices=SEVERITY_LEVELS, validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name=_('Severity'))
+    latitude = models.FloatField(help_text=_("Latitude coordinate"), verbose_name=_('Latitude'))
+    longitude = models.FloatField(help_text=_("Longitude coordinate"), verbose_name=_('Longitude'))
+    polygon_coordinates = models.TextField(help_text=_("Polygon coordinates as JSON"), null=True, blank=True, verbose_name=_('Polygon Coordinates'))
+    area_size = models.FloatField(help_text=_("Area size in square meters"), null=True, blank=True, verbose_name=_('Area Size'))
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='polluted_areas')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -38,8 +39,8 @@ class PollutedArea(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Polluted Area'
-        verbose_name_plural = 'Polluted Areas'
+        verbose_name = _('Polluted Area')
+        verbose_name_plural = _('Polluted Areas')
     
     def get_polygon_coordinates(self):
         """Return polygon coordinates as a list of [lat, lng] pairs"""
@@ -78,10 +79,10 @@ class PollutedArea(models.Model):
 
 class PollutionReport(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('verified', 'Verified'),
-        ('rejected', 'Rejected'),
-        ('resolved', 'Resolved'),
+        ('pending', _('Pending')),
+        ('verified', _('Verified')),
+        ('rejected', _('Rejected')),
+        ('resolved', _('Resolved')),
     ]
     
     polluted_area = models.ForeignKey(PollutedArea, on_delete=models.CASCADE, related_name='reports')

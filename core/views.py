@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from django.utils.translation import gettext as _, activate, get_language
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .forms import LoginForm, UserRegistrationForm
 
 
@@ -11,7 +14,7 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Pollution Tracker'
+        context['title'] = _('Pollution Tracker')
         return context
 
 
@@ -27,10 +30,10 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f'Welcome back, {user.username}!')
+                messages.success(request, _('Welcome back, %(username)s!') % {'username': user.username})
                 return redirect('dashboard:home')
             else:
-                messages.error(request, 'Invalid username or password.')
+                messages.error(request, _('Invalid username or password.'))
     else:
         form = LoginForm()
     
@@ -46,7 +49,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}! You can now log in.')
+            messages.success(request, _('Account created for %(username)s! You can now log in.') % {'username': username})
             return redirect('core:login')
     else:
         form = UserRegistrationForm()
@@ -57,5 +60,20 @@ def register_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.info(request, 'You have been logged out successfully.')
+    messages.info(request, _('You have been logged out successfully.'))
     return redirect('core:home')
+
+
+def set_language(request):
+    """Set the language preference"""
+    if request.method == 'GET':
+        language = request.GET.get('language')
+        if language in ['en', 'fa']:
+            # Set the language in the session
+            request.session['django_language'] = language
+            # Activate the language for the current request
+            activate(language)
+            # Force session save
+            request.session.save()
+            messages.success(request, _('Language changed successfully.'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
